@@ -22,7 +22,7 @@ public class TimeController {
 
     @GetMapping("{id}")
     public ResponseEntity<Time> find(@PathVariable("id") final Long id) {
-        final var time = this.timeService.find(id);
+        final Time time = this.timeService.find(id);
         return ResponseEntity.ok(time);
     }
 
