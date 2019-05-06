@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TIMES")
 @SequenceGenerator(name = "SEQ_TIMES", sequenceName = "SEQ_TIMES", allocationSize = 1)
-public class Time {
+public class Time implements ContextoUsuario {
 
     @Id
     @Column(name = "ID")
@@ -17,6 +17,10 @@ public class Time {
 
     @Column(name = "SOBRE")
     private String sobre;
+
+    @OneToOne
+    @JoinColumn(name = "I_USUARIO")
+    private Usuario usuario;
 
     public Time() {
     }
@@ -49,5 +53,13 @@ public class Time {
 
     public void setSobre(String sobre) {
         this.sobre = sobre;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

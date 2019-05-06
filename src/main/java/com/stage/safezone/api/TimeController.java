@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("times")
 public class TimeController {
@@ -18,6 +20,11 @@ public class TimeController {
     @Autowired
     public TimeController(TimeService timeService) {
         this.timeService = timeService;
+    }
+
+    @GetMapping
+    public List<Time> findAll() {
+        return this.timeService.findAll();
     }
 
     @GetMapping("{id}")

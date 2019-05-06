@@ -1,5 +1,8 @@
 package com.stage.safezone.repository;
 
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilderFactory;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.stage.safezone.model.Entidade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -48,9 +51,10 @@ public class BasicRepository {
     }
 
     public <T extends Entidade> List<T> findAll(final Class<T> clazz) {
-//        return JpaCriteriaHelper.select(this.em,clazz).getResults();
+        final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
+        final JPAQuery select = new JPAQuery<T>(em).select(expr);
 
-        return null;
+        return (List<T>) select.from(expr).fetch();
 
     }
 
