@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -18,25 +17,25 @@ public class SolicitacaoIngressoResource {
     private SolicitacaoIngressoService solicitacaoIngressoService;
 
     @PostMapping("time/{id}/solicitar")
-    public ResponseEntity solicitar(@PathParam("id") final Long id) {
+    public ResponseEntity solicitar(@PathVariable("id") final Long id) {
         SolicitacaoIngresso solicitacaoIngresso = solicitacaoIngressoService.solicitar(id);
         return ResponseEntity.ok(solicitacaoIngresso);
     }
 
     @PutMapping("{id}/aprovar")
-    public ResponseEntity aprovar(@PathParam("id") final Long id) {
+    public ResponseEntity aprovar(@PathVariable("id") final Long id) {
         SolicitacaoIngresso aprovar = solicitacaoIngressoService.aprovar(id);
         return ResponseEntity.ok(aprovar);
     }
 
     @PutMapping("{id}/negar")
-    public ResponseEntity negar(@PathParam("id") final Long id) {
+    public ResponseEntity negar(@PathVariable("id") final Long id) {
         SolicitacaoIngresso aprovar = solicitacaoIngressoService.negar(id);
         return ResponseEntity.ok(aprovar);
     }
 
     @GetMapping("time/{id}")
-    public ResponseEntity porTime(@PathParam("id") final Long id) {
+    public ResponseEntity porTime(@PathVariable("id") final Long id) {
         List<SolicitacaoIngresso> solicitacaoIngressos = solicitacaoIngressoService.porTime(id);
         return ResponseEntity.ok(solicitacaoIngressos);
     }

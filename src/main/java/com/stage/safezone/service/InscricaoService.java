@@ -1,5 +1,6 @@
 package com.stage.safezone.service;
 
+import com.querydsl.jpa.JPAQueryBase;
 import com.stage.safezone.model.Evento;
 import com.stage.safezone.model.Inscricao;
 import com.stage.safezone.model.Usuario;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.stage.safezone.model.QInscricao.inscricao;
 import static com.stage.safezone.model.enums.InscricaoStatus.CONFIRMADO;
 import static com.stage.safezone.model.enums.InscricaoStatus.PENDENTE;
 
@@ -30,32 +32,32 @@ public class InscricaoService implements CrudService<Inscricao> {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Inscricao save(Inscricao inscricao) {
-        return repository.save(Inscricao.class, inscricao);
+    public Inscricao save(final Inscricao inscricao) {
+        return this.repository.save(Inscricao.class, inscricao);
     }
 
     @Override
-    public Inscricao find(Long id) {
-        return null;
+    public Inscricao find(final Long id) {
+        return this.repository.find(Inscricao.class, id);
     }
 
     @Override
     public List<Inscricao> findAll() {
-        return null;
+        return this.repository.findAll(Inscricao.class);
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(final Long id) {
+        this.repository.delete(Inscricao.class, id);
     }
 
     public Inscricao inscrever(Long idEvento) {
 
-        final Evento evento = eventoService.find(idEvento);
-        final Inscricao inscricaoNova = new Inscricao(evento, PENDENTE, usuarioService.usuarioContexto());
-        new InscricaoSpecification(contextoUsuarioRepository).validate(inscricaoNova);
+        final Evento evento = this.eventoService.find(idEvento);
+        final Inscricao inscricaoNova = new Inscricao(evento, PENDENTE, this.usuarioService.usuarioContexto());
+        new InscricaoSpecification(this.contextoUsuarioRepository).validate(inscricaoNova);
 
-        return contextoUsuarioRepository.saveWithContext(Inscricao.class, inscricaoNova);
+        return this.contextoUsuarioRepository.saveWithContext(Inscricao.class, inscricaoNova);
 
     }
 
@@ -73,19 +75,15 @@ public class InscricaoService implements CrudService<Inscricao> {
 
     }
 
-
     public List<Inscricao> findByUsuario(Long usuarioId) {
-
         if (usuarioId == null) {
-            Usuario usuario = usuarioService.usuarioContexto();
+            final Usuario usuario = this.usuarioService.usuarioContexto();
             usuarioId = usuario.getId();
         }
+        final JPAQueryBase where = (JPAQueryBase) repository.query(Inscricao.class)
+                .where(inscricao.usuario.id.eq(usuarioId));
 
-//        return contextoUsuarioRepository.query()
-//                .selectFrom(inscricao)
-//                .where(inscricao.usuario.id.eq(usuarioId))
-//                .fetch();
-        return null;
+        return where.fetch();
 
     }
 

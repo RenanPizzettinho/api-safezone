@@ -5,12 +5,8 @@ import com.stage.safezone.service.EventoService;
 import com.stage.safezone.service.InscricaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -34,7 +30,7 @@ public class EventoResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathParam("id") Long id) {
+    public ResponseEntity getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(eventoService.find(id));
     }
 

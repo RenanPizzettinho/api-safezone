@@ -1,7 +1,9 @@
 package com.stage.safezone.repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.PathBuilderFactory;
+import com.querydsl.jpa.JPAQueryBase;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.stage.safezone.model.Entidade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,22 +60,34 @@ public class BasicRepository {
 
     }
 
+    public <T extends Entidade> List<T> findAll(final Class<T> clazz, final Expression... expression) {
+        final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
+        final JPAQuery select = new JPAQuery<T>(em).select(expression);
+
+        return (List<T>) select.from(expr).fetch();
+
+    }
+
+    public <T extends Entidade> JPAQueryBase query(final Class<T> clazz) {
+        final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
+        final JPAQuery select = new JPAQuery<T>(em).select(expr);
+
+        return select.from(expr);
+
+    }
+
+    public <T extends Entidade> JPAQueryBase query(final Class<T> clazz, final Expression... expression) {
+        final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
+        final JPAQuery select = new JPAQuery<T>(em).select(expression);
+
+        return select.from(expr);
+
+    }
+
     protected <T extends Entidade> void checkNotFound(final T bean) {
         if (bean == null) {
             throw new EntityNotFoundException();
         }
     }
-
-//    public JpaCriteriaHelper<T> selectCriteria(){
-//        return JpaCriteriaHelper.select(this.em,clazz);
-//    }
-//
-//    public JPAQueryFactory query() {
-//        return new JPAQueryFactory(this.em);
-//    }
-//
-//    public JPAUpdateClause update(EntityPath<T> entityPath){
-//        return new JPAUpdateClause(this.em, entityPath);
-//    }
 
 }
