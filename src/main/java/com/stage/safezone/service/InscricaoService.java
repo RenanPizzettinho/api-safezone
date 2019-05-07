@@ -54,7 +54,7 @@ public class InscricaoService implements CrudService<Inscricao> {
     public Inscricao inscrever(Long idEvento) {
         final Evento evento = this.eventoService.find(idEvento);
         final Inscricao inscricaoNova = new Inscricao(evento, PENDENTE, this.usuarioService.usuarioContexto());
-        new InscricaoSpecification(this.contextoUsuarioRepository).validate(inscricaoNova);
+        new InscricaoSpecification(repository).validate(inscricaoNova);
 
         return this.contextoUsuarioRepository.saveWithContext(Inscricao.class, inscricaoNova);
 

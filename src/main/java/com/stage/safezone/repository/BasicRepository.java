@@ -60,7 +60,7 @@ public class BasicRepository {
     }
 
     public <T extends Entidade> JPAQuery<T> query() {
-        return new JPAQuery<T>();
+        return new JPAQuery<>();
     }
 
     public <T extends Entidade> JPAQuery<T> query(final Class<T> clazz) {
