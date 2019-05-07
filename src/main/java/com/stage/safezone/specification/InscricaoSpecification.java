@@ -3,11 +3,13 @@ package com.stage.safezone.specification;
 import com.stage.safezone.exception.ValidationException;
 import com.stage.safezone.model.Inscricao;
 import com.stage.safezone.repository.ContextoUsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class InscricaoSpecification implements Specification<Inscricao> {
 
-    private ContextoUsuarioRepository repository;
+    private final ContextoUsuarioRepository repository;
 
+    @Autowired
     public InscricaoSpecification(ContextoUsuarioRepository repository) {
         this.repository = repository;
     }

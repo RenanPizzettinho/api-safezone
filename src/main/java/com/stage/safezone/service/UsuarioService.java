@@ -4,10 +4,10 @@ import com.stage.safezone.exception.LoginException;
 import com.stage.safezone.model.Sessao;
 import com.stage.safezone.model.Usuario;
 import com.stage.safezone.repository.BasicRepository;
-import com.stage.safezone.repository.OperadorRepository;
 import com.stage.safezone.repository.UsuarioRepository;
 import com.stage.safezone.util.UsuarioContext;
 import com.stage.safezone.vo.UsuarioVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
@@ -17,14 +17,13 @@ import java.util.List;
 @Service
 public class UsuarioService implements CrudService<Usuario> {
 
-    private BasicRepository repository;
-    private OperadorRepository operadorRepository;
-    private UsuarioRepository usuarioRepository;
-    private UsuarioContext usuarioContext;
+    private final BasicRepository repository;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioContext usuarioContext;
 
-    public UsuarioService(BasicRepository repository, OperadorRepository operadorRepository, UsuarioRepository usuarioRepository, UsuarioContext usuarioContext) {
+    @Autowired
+    public UsuarioService(final BasicRepository repository, final UsuarioRepository usuarioRepository, final UsuarioContext usuarioContext) {
         this.repository = repository;
-        this.operadorRepository = operadorRepository;
         this.usuarioRepository = usuarioRepository;
         this.usuarioContext = usuarioContext;
     }

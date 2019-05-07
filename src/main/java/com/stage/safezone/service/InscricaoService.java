@@ -1,6 +1,6 @@
 package com.stage.safezone.service;
 
-import com.querydsl.jpa.JPAQueryBase;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.stage.safezone.model.Evento;
 import com.stage.safezone.model.Inscricao;
 import com.stage.safezone.model.Usuario;
@@ -52,7 +52,6 @@ public class InscricaoService implements CrudService<Inscricao> {
     }
 
     public Inscricao inscrever(Long idEvento) {
-
         final Evento evento = this.eventoService.find(idEvento);
         final Inscricao inscricaoNova = new Inscricao(evento, PENDENTE, this.usuarioService.usuarioContexto());
         new InscricaoSpecification(this.contextoUsuarioRepository).validate(inscricaoNova);
@@ -62,17 +61,13 @@ public class InscricaoService implements CrudService<Inscricao> {
     }
 
     public Inscricao cancelar(Long idInscricao) {
-
         this.mudarStatus(idInscricao, InscricaoStatus.CANCELADO);
         return this.find(idInscricao);
-
     }
 
     public Inscricao confirmar(Long idInscricao) {
-
         this.mudarStatus(idInscricao, CONFIRMADO);
         return this.find(idInscricao);
-
     }
 
     public List<Inscricao> findByUsuario(Long usuarioId) {
@@ -80,7 +75,7 @@ public class InscricaoService implements CrudService<Inscricao> {
             final Usuario usuario = this.usuarioService.usuarioContexto();
             usuarioId = usuario.getId();
         }
-        final JPAQueryBase where = (JPAQueryBase) repository.query(Inscricao.class)
+        final JPAQuery<Inscricao> where = repository.query(Inscricao.class)
                 .where(inscricao.usuario.id.eq(usuarioId));
 
         return where.fetch();
@@ -88,21 +83,18 @@ public class InscricaoService implements CrudService<Inscricao> {
     }
 
     public List<Inscricao> findByEvento(Long eventoId) {
+        final JPAQuery<Inscricao> where = repository.query(Inscricao.class)
+                .where(inscricao.evento.id.eq(eventoId));
 
-//        return contextoUsuarioRepository.query()
-//                .selectFrom(inscricao)
-//                .where(inscricao.evento.id.eq(eventoId))
-//                .fetch();
-
-        return null;
+        return where.fetch();
 
     }
 
     private void mudarStatus(Long idInscricao, InscricaoStatus status) {
-//        contextoUsuarioRepository.update(inscricao)
-//                .set(inscricao.status, status)
-//                .where(inscricao.id.eq(idInscricao))
-//                .execute();
+        repository.update(Inscricao.class)
+                .set(inscricao.status, status)
+                .where(inscricao.id.eq(idInscricao))
+                .execute();
     }
 
 

@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.stage</groupId>
-    <artifactId>safezone</artifactId>
+    <artifactId>api-safezone</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>api-safezone</name>
     <description>Airsoft gane scheduler</description>

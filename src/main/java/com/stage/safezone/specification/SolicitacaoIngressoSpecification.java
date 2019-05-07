@@ -3,11 +3,13 @@ package com.stage.safezone.specification;
 import com.stage.safezone.exception.ValidationException;
 import com.stage.safezone.model.SolicitacaoIngresso;
 import com.stage.safezone.repository.BasicRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SolicitacaoIngressoSpecification implements Specification<SolicitacaoIngresso> {
 
-    private BasicRepository repository;
+    private final BasicRepository repository;
 
+    @Autowired
     public SolicitacaoIngressoSpecification(BasicRepository repository) {
         this.repository = repository;
     }

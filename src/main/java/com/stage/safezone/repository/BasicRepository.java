@@ -1,10 +1,9 @@
 package com.stage.safezone.repository;
 
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.PathBuilderFactory;
-import com.querydsl.jpa.JPAQueryBase;
 import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.stage.safezone.model.Entidade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,10 +15,10 @@ import java.util.List;
 @Repository
 public class BasicRepository {
 
-    @Autowired
-    private EntityManager em;
+    private final EntityManager em;
 
-    public BasicRepository(EntityManager em) {
+    @Autowired
+    public BasicRepository(final EntityManager em) {
         this.em = em;
     }
 
@@ -54,40 +53,32 @@ public class BasicRepository {
 
     public <T extends Entidade> List<T> findAll(final Class<T> clazz) {
         final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
-        final JPAQuery select = new JPAQuery<T>(em).select(expr);
+        final JPAQuery<T> select = new JPAQuery<T>(em).select(expr);
 
-        return (List<T>) select.from(expr).fetch();
-
-    }
-
-    public <T extends Entidade> List<T> findAll(final Class<T> clazz, final Expression... expression) {
-        final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
-        final JPAQuery select = new JPAQuery<T>(em).select(expression);
-
-        return (List<T>) select.from(expr).fetch();
+        return select.from(expr).fetch();
 
     }
 
-    public <T extends Entidade> JPAQueryBase query(final Class<T> clazz) {
+    public <T extends Entidade> JPAQuery<T> query() {
+        return new JPAQuery<T>();
+    }
+
+    public <T extends Entidade> JPAQuery<T> query(final Class<T> clazz) {
         final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
-        final JPAQuery select = new JPAQuery<T>(em).select(expr);
+        final JPAQuery<T> select = new JPAQuery<T>(em).select(expr);
 
         return select.from(expr);
 
     }
 
-    public <T extends Entidade> JPAQueryBase query(final Class<T> clazz, final Expression... expression) {
-        final PathBuilder<T> expr = new PathBuilderFactory().create(clazz);
-        final JPAQuery select = new JPAQuery<T>(em).select(expression);
-
-        return select.from(expr);
-
-    }
-
-    protected <T extends Entidade> void checkNotFound(final T bean) {
+    public <T extends Entidade> void checkNotFound(final T bean) {
         if (bean == null) {
             throw new EntityNotFoundException();
         }
     }
 
+    public <T extends Entidade> JPAUpdateClause update(final Class<T> clazz) {
+        final PathBuilder<T> pathBuilder = new PathBuilderFactory().create(clazz);
+        return new JPAUpdateClause(this.em, pathBuilder);
+    }
 }

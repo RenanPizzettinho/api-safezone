@@ -33,11 +33,10 @@ public class TimeController {
         return ResponseEntity.ok(time);
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<Time> search(@PathVariable("id") final Long id){
-//        final var time = this.timeService.search();
-//        return ResponseEntity.ok(time);
-//    }
-
+    @GetMapping("/meu")
+    public ResponseEntity meusTime() {
+        final List<Time> times = timeService.meuTime();
+        return ResponseEntity.ok(times);
+    }
 
 }
