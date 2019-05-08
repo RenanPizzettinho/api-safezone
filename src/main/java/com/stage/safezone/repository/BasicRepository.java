@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.stage.safezone.model.Entidade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -22,6 +23,7 @@ public class BasicRepository {
         this.em = em;
     }
 
+    @Transactional
     public <T extends Entidade> T save(final Class<T> clazz, final T bean) {
         if (bean.getId() != null) {
             final T oldBean = this.em.find(clazz, bean.getId());
@@ -37,6 +39,7 @@ public class BasicRepository {
         }
     }
 
+    @Transactional
     public <T extends Entidade> void delete(final Class<T> clazz, final Long id) {
         final T reference = this.em.getReference(clazz, id);
         this.checkNotFound(reference);
@@ -60,7 +63,7 @@ public class BasicRepository {
     }
 
     public <T extends Entidade> JPAQuery<T> query() {
-        return new JPAQuery<>();
+        return new JPAQuery<>(em);
     }
 
     public <T extends Entidade> JPAQuery<T> query(final Class<T> clazz) {

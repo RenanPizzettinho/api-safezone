@@ -13,18 +13,18 @@ public class UsuarioResource {
     @Autowired
     private UsuarioService usuarioService;
 
-    @PostMapping("login")
-    public ResponseEntity login(Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.logar(usuario));
+    @GetMapping
+    public ResponseEntity oi(Usuario usuario) {
+        return ResponseEntity.ok("oi");
     }
 
     @PostMapping
-    public ResponseEntity create(Usuario usuario) {
+    public ResponseEntity create(@RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.save(usuario));
     }
 
     @PutMapping
-    public ResponseEntity update(Usuario usuario) {
+    public ResponseEntity update(@RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.update(usuario));
     }
 
