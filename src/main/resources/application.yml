@@ -11,3 +11,13 @@ spring:
   server:
     port: 8080
     contextPath: /safezone
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+defaut:
+  user: user
+  password: password
+  secret: secret
