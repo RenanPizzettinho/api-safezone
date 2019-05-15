@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /safezone
+    context-path: /safezone/api
   port: 8080
 spring:
   application:
