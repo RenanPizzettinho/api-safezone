@@ -1,3 +1,7 @@
+server:
+  servlet:
+    context-path: /safezone
+  port: 8080
 spring:
   application:
     name: safezone
@@ -8,9 +12,6 @@ spring:
     driverName: postgresql
   debug:
     port: 9990
-  server:
-    port: 8080
-    contextPath: /safezone
   jpa:
     properties:
       hibernate:

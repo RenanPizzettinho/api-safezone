@@ -10,21 +10,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("usuarios")
 public class UsuarioResource {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
-    @GetMapping
-    public ResponseEntity oi(Usuario usuario) {
-        return ResponseEntity.ok("oi");
+    @Autowired
+    public UsuarioResource(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody Usuario usuario) {
+    public ResponseEntity create(@RequestBody final Usuario usuario) {
         return ResponseEntity.ok(usuarioService.save(usuario));
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody Usuario usuario) {
+    public ResponseEntity update(@RequestBody final Usuario usuario) {
         return ResponseEntity.ok(usuarioService.update(usuario));
     }
 
