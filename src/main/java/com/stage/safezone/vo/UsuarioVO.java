@@ -21,7 +21,7 @@ public class UsuarioVO {
 
     public UsuarioVO(Usuario usuario) {
         this.id = usuario.getId();
-        this.usuario = usuario.getUsuario();
+        this.usuario = usuario.getUsername();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
     }

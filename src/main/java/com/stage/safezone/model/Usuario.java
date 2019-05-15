@@ -17,7 +17,7 @@ public class Usuario implements Entidade, UserDetails {
     private Long id;
 
     @Column(name = "USUARIO", unique = true)
-    private String usuario;
+    private String username;
 
     @Column(name = "NOME")
     private String nome;
@@ -26,17 +26,17 @@ public class Usuario implements Entidade, UserDetails {
     private String email;
 
     @Column(name = "SENHA")
-    private String senha;
+    private String password;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String usuario, String nome, String email, String senha) {
+    public Usuario(Long id, String username, String nome, String email, String password) {
         this.id = id;
-        this.usuario = usuario;
+        this.username = username;
         this.nome = nome;
         this.email = email;
-        this.senha = senha;
+        this.password = password;
     }
 
     @Override
@@ -48,12 +48,8 @@ public class Usuario implements Entidade, UserDetails {
         this.id = id;
     }
 
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getNome() {
@@ -72,12 +68,13 @@ public class Usuario implements Entidade, UserDetails {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -86,13 +83,8 @@ public class Usuario implements Entidade, UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return this.senha;
-    }
-
-    @Override
     public String getUsername() {
-        return this.usuario;
+        return this.username;
     }
 
     @Override

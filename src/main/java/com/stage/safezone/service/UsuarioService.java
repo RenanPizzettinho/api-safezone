@@ -26,7 +26,7 @@ public class UsuarioService implements CrudService<Usuario> {
     }
 
     public Usuario save(final Usuario usuario) {
-        usuario.setSenha(this.passwordSecure(usuario.getSenha()));
+        usuario.setPassword(this.passwordSecure(usuario.getPassword()));
         return this.repository.save(Usuario.class, usuario);
     }
 
@@ -47,12 +47,12 @@ public class UsuarioService implements CrudService<Usuario> {
 
     public UsuarioVO update(final Usuario usuario) {
         final Usuario usuarioContexto = this.usuarioContexto();
-        final String senha = usuario.getSenha();
+        final String senha = usuario.getPassword();
         if (senha != null) {
-            usuarioContexto.setSenha(this.passwordSecure(senha));
+            usuarioContexto.setPassword(this.passwordSecure(senha));
         }
         usuarioContexto.setNome(usuario.getNome());
-        usuarioContexto.setUsuario(usuario.getUsuario());
+        usuarioContexto.setUsername(usuario.getUsername());
         usuarioContexto.setEmail(usuario.getEmail());
 
         final Usuario save = this.repository.save(Usuario.class, usuarioContexto);

@@ -9,7 +9,7 @@ public class Sessao {
     }
 
     public Sessao(Usuario usuario, String token) {
-        this.usuario = usuario.getUsuario();
+        this.usuario = usuario.getUsername();
         this.token = token;
     }
 

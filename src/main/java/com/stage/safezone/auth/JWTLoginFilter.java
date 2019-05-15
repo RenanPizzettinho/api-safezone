@@ -18,6 +18,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     public JWTLoginFilter(final String defaultFilterProcessesUrl, final AuthenticationManager authenticationManager) {
         super(defaultFilterProcessesUrl);
         setAuthenticationManager(authenticationManager);
+
     }
 
     @Override

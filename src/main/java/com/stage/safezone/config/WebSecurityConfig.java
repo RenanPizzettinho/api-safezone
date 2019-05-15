@@ -4,7 +4,6 @@ import com.stage.safezone.auth.JWTAuthenticationFilter;
 import com.stage.safezone.auth.JWTLoginFilter;
 import com.stage.safezone.auth.UserDetaisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,12 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${defaut.user}")
-    private String user;
-
-    @Value("${defaut.password}")
-    private String password;
-
     @Autowired
     private UserDetaisService userDetaisService;
 
@@ -32,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/usuarios").permitAll()
+                .antMatchers(HttpMethod.POST, "/usuarios").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()

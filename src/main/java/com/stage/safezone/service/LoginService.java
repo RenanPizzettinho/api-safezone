@@ -15,13 +15,13 @@ public class LoginService {
     private UsuarioRepository usuarioRepository;
 
     public void logar(final Usuario usuario) {
-//        final String passwordSecure = this.usuarioService.passwordSecure(usuario.getSenha());
-//        final Usuario byUsuario = this.usuarioRepository.findByUsuario(usuario.getUsuario());
+//        final String passwordSecure = this.usuarioService.passwordSecure(usuario.getPassword());
+//        final Usuario byUsuario = this.usuarioRepository.findByUsuario(usuario.getUsername());
 //        if (byUsuario == null) {
-//            throw new LoginException("Usuário " + usuario.getUsuario() + " não encontrado");
+//            throw new LoginException("Usuário " + usuario.getUsername() + " não encontrado");
 //        }
-//        if (passwordSecure.equals(byUsuario.getSenha())) {
-//            return new Sessao(byUsuario, this.generateToken(usuario.getUsuario()));
+//        if (passwordSecure.equals(byUsuario.getPassword())) {
+//            return new Sessao(byUsuario, this.generateToken(usuario.getUsername()));
 //        }
 //        throw new LoginException("Senha incorreta");
     }

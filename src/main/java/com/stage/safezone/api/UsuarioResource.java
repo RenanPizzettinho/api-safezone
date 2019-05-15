@@ -13,7 +13,7 @@ public class UsuarioResource {
     private final UsuarioService usuarioService;
 
     @Autowired
-    public UsuarioResource(UsuarioService usuarioService) {
+    public UsuarioResource(final UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
@@ -27,7 +27,7 @@ public class UsuarioResource {
         return ResponseEntity.ok(usuarioService.update(usuario));
     }
 
-    @GetMapping("login")
+    @GetMapping("eu")
     public ResponseEntity findOne() {
         return ResponseEntity.ok(usuarioService.eu());
     }
