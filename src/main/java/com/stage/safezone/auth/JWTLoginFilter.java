@@ -15,8 +15,11 @@ import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public JWTLoginFilter(final String defaultFilterProcessesUrl, final AuthenticationManager authenticationManager) {
+    private final TokenAuthenticationService tokenAuthenticationService;
+
+    public JWTLoginFilter(final String defaultFilterProcessesUrl, final AuthenticationManager authenticationManager, TokenAuthenticationService tokenAuthenticationService) {
         super(defaultFilterProcessesUrl);
+        this.tokenAuthenticationService = tokenAuthenticationService;
         setAuthenticationManager(authenticationManager);
 
     }
@@ -24,12 +27,12 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse httpServletResponse) throws AuthenticationException, IOException {
         final AccountCredentials credentials = new ObjectMapper().readValue(request.getInputStream(), AccountCredentials.class);
-        final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(credentials.getUsuario(), credentials.getSenha(), Collections.emptyList());
+        final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword(), Collections.emptyList());
         return getAuthenticationManager().authenticate(authentication);
     }
 
     @Override
     protected void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain, final Authentication authResult) {
-        TokenAuthenticationService.addAuthentication(response, authResult.getName());
+        this.tokenAuthenticationService.addAuthentication(response, authResult.getName());
     }
 }

@@ -1,7 +1,9 @@
 package com.stage.safezone.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -11,11 +13,19 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+@Component
 public class JWTAuthenticationFilter extends GenericFilterBean {
+
+    private final TokenAuthenticationService tokenAuthenticationService;
+
+    @Autowired
+    public JWTAuthenticationFilter(TokenAuthenticationService tokenAuthenticationService) {
+        this.tokenAuthenticationService = tokenAuthenticationService;
+    }
 
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain filterChain) throws IOException, ServletException {
-        final Authentication authentication = TokenAuthenticationService.getAuthentication((HttpServletRequest) request);
+        final Authentication authentication = this.tokenAuthenticationService.getAuthentication((HttpServletRequest) request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }

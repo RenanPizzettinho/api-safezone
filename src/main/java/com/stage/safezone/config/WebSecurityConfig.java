@@ -2,6 +2,7 @@ package com.stage.safezone.config;
 
 import com.stage.safezone.auth.JWTAuthenticationFilter;
 import com.stage.safezone.auth.JWTLoginFilter;
+import com.stage.safezone.auth.TokenAuthenticationService;
 import com.stage.safezone.auth.UserDetaisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetaisService userDetaisService;
 
+    @Autowired
+    private TokenAuthenticationService tokenAuthenticationService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
@@ -29,9 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager(), this.tokenAuthenticationService),
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JWTAuthenticationFilter(),
+                .addFilterBefore(new JWTAuthenticationFilter(tokenAuthenticationService),
                         UsernamePasswordAuthenticationFilter.class);
     }
 
