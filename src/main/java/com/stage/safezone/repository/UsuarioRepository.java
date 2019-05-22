@@ -10,9 +10,14 @@ import static com.stage.safezone.model.QUsuario.usuario;
 @Repository
 public class UsuarioRepository {
 
-    @Autowired
-    private BasicRepository repository;
+    private final BasicRepository repository;
 
+    @Autowired
+    public UsuarioRepository(final BasicRepository repository) {
+        this.repository = repository;
+    }
+
+    //TODO - renan.silvano - Candidato a uso de cache
     public Usuario findByUsuario(final String username) {
         return this.repository.query()
                 .select(QUsuario.usuario)
