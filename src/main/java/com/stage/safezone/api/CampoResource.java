@@ -19,7 +19,12 @@ public class CampoResource {
     }
 
     @PostMapping
-    public ResponseEntity create(final Campo campo) {
+    public ResponseEntity create(@RequestBody final Campo campo) {
+        return ResponseEntity.ok(campoService.save(campo));
+    }
+
+    @PutMapping
+    public ResponseEntity update(@RequestBody final Campo campo) {
         return ResponseEntity.ok(campoService.save(campo));
     }
 

@@ -6,7 +6,8 @@ public class LoginException extends RuntimeException {
         super("Erro ao realizar o login");
     }
 
-    public LoginException(String message) {
+    public LoginException(final String message) {
         super(message);
     }
+
 }

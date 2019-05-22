@@ -11,91 +11,91 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.stage.safezone.model.QSolicitacaoIngresso.solicitacaoIngresso;
 import static com.stage.safezone.model.enums.SituacaoOperador.OPERANDO;
 import static com.stage.safezone.model.enums.SituacaoSolicitacao.*;
 
 @Service
 public class SolicitacaoIngressoService implements CrudService<SolicitacaoIngresso> {
 
-    @Autowired
-    private BasicRepository repository;
+    private final BasicRepository repository;
+    private final OperadorService operadorService;
+    private final UsuarioService usuarioService;
+    private final TimeService timeService;
 
     @Autowired
-    private OperadorService operadorService;
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private TimeService timeService;
-
-    @Override
-    public SolicitacaoIngresso save(SolicitacaoIngresso solicitacaoIngresso) {
-        return repository.save(SolicitacaoIngresso.class, solicitacaoIngresso);
+    public SolicitacaoIngressoService(final BasicRepository repository, final OperadorService operadorService, final UsuarioService usuarioService, final TimeService timeService) {
+        this.repository = repository;
+        this.operadorService = operadorService;
+        this.usuarioService = usuarioService;
+        this.timeService = timeService;
     }
 
     @Override
-    public SolicitacaoIngresso find(Long id) {
-        return null;
+    public SolicitacaoIngresso save(final SolicitacaoIngresso solicitacaoIngresso) {
+        return this.repository.save(SolicitacaoIngresso.class, solicitacaoIngresso);
+    }
+
+    @Override
+    public SolicitacaoIngresso find(final Long id) {
+        return this.repository.find(SolicitacaoIngresso.class, id);
     }
 
     @Override
     public List<SolicitacaoIngresso> findAll() {
-        return null;
+        return this.repository.findAll(SolicitacaoIngresso.class);
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(final Long id) {
+        this.repository.delete(SolicitacaoIngresso.class, id);
     }
 
-    public SolicitacaoIngresso solicitar(Long timeId) {
+    public SolicitacaoIngresso solicitar(final Long timeId) {
 
-        final Usuario usuario = usuarioService.usuarioContexto();
-        final Time time = timeService.find(timeId);
+        final Usuario usuario = this.usuarioService.usuarioContexto();
+        final Time time = this.timeService.find(timeId);
         final SolicitacaoIngresso solicitacaoIngresso = new SolicitacaoIngresso(usuario, time, PENDENTE, null);
 
-        new SolicitacaoIngressoSpecification(repository).validate(solicitacaoIngresso);
+        new SolicitacaoIngressoSpecification(this.repository).validate(solicitacaoIngresso);
 
         return this.save(solicitacaoIngresso);
 
     }
 
-    public SolicitacaoIngresso aprovar(Long id) {
+    public SolicitacaoIngresso aprovar(final Long id) {
 
         final SolicitacaoIngresso solicitacaoIngresso = this.find(id);
         solicitacaoIngresso.setSituacao(APROVADA);
-        final Integer identificadorPorTime = operadorService.getMaxIdentificadorPorTime(solicitacaoIngresso.getTime().getId());
-        final Operador operador = operadorService.save(new Operador(solicitacaoIngresso.getUsuario(), solicitacaoIngresso.getTime(), identificadorPorTime, OPERANDO));
+        final Integer identificadorPorTime = this.operadorService.getMaxIdentificadorPorTime(solicitacaoIngresso.getTime().getId());
+        final Operador novoOperador = new Operador(solicitacaoIngresso.getUsuario(), solicitacaoIngresso.getTime(), identificadorPorTime, OPERANDO);
+        final Operador operador = this.operadorService.save(novoOperador);
         solicitacaoIngresso.setOperador(operador);
 
         return this.save(solicitacaoIngresso);
 
     }
 
-    public SolicitacaoIngresso negar(Long id) {
+    public SolicitacaoIngresso negar(final Long id) {
 
-        SolicitacaoIngresso solicitacaoIngresso = this.find(id);
+        final SolicitacaoIngresso solicitacaoIngresso = this.find(id);
         solicitacaoIngresso.setSituacao(NEGADA);
 
         return this.save(solicitacaoIngresso);
 
     }
 
-    public List<SolicitacaoIngresso> porTime(Long id) {
-//        return repository.query()
-//                .selectFrom(solicitacaoIngresso)
-//                .where(solicitacaoIngresso.time.id.eq(id))
-//                .fetch();
-        return null;
+    public List<SolicitacaoIngresso> porTime(final Long id) {
+        return this.repository.query()
+                .select(solicitacaoIngresso)
+                .where(solicitacaoIngresso.time.id.eq(id))
+                .fetch();
     }
 
     public List<SolicitacaoIngresso> minhas() {
-//        return repository.query()
-//                .selectFrom(solicitacaoIngresso)
-//                .where(solicitacaoIngresso.usuario.id.eq(usuarioService.usuarioContexto().getId()))
-//                .fetch();
-
-        return null;
+        return this.repository.query()
+                .select(solicitacaoIngresso)
+                .where(solicitacaoIngresso.usuario.id.eq(this.usuarioService.usuarioContexto().getId()))
+                .fetch();
     }
 }

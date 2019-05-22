@@ -4,7 +4,6 @@ import com.stage.safezone.auth.JWTAuthenticationFilter;
 import com.stage.safezone.auth.JWTLoginFilter;
 import com.stage.safezone.auth.TokenAuthenticationService;
 import com.stage.safezone.auth.UserDetaisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,14 +17,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetaisService userDetaisService;
+    private final UserDetaisService userDetaisService;
+    private final TokenAuthenticationService tokenAuthenticationService;
 
-    @Autowired
-    private TokenAuthenticationService tokenAuthenticationService;
+    public WebSecurityConfig(final UserDetaisService userDetaisService, final TokenAuthenticationService tokenAuthenticationService) {
+        this.userDetaisService = userDetaisService;
+        this.tokenAuthenticationService = tokenAuthenticationService;
+    }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.csrf()
                 .disable()
                 .authorizeRequests()
@@ -33,13 +34,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager(), this.tokenAuthenticationService),
+                .addFilterBefore(new JWTLoginFilter("/login", this.authenticationManager(), this.tokenAuthenticationService),
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JWTAuthenticationFilter(tokenAuthenticationService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTAuthenticationFilter(this.tokenAuthenticationService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(this.userDetaisService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }

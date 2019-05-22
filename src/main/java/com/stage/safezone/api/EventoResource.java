@@ -20,7 +20,7 @@ public class EventoResource {
     }
 
     @PostMapping
-    public ResponseEntity create(final Evento evento) {
+    public ResponseEntity create(@RequestBody final Evento evento) {
         return ResponseEntity.ok(eventoService.save(evento));
     }
 

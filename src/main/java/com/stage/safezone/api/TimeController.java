@@ -4,10 +4,7 @@ import com.stage.safezone.model.Time;
 import com.stage.safezone.service.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class TimeController {
     private final TimeService timeService;
 
     @Autowired
-    public TimeController(TimeService timeService) {
+    public TimeController(final TimeService timeService) {
         this.timeService = timeService;
     }
 
@@ -31,6 +28,18 @@ public class TimeController {
     public ResponseEntity<Time> find(@PathVariable("id") final Long id) {
         final Time time = this.timeService.find(id);
         return ResponseEntity.ok(time);
+    }
+
+    @PostMapping
+    public ResponseEntity<Time> create(@RequestBody final Time time) {
+        final Time save = this.timeService.save(time);
+        return ResponseEntity.ok(save);
+    }
+
+    @PutMapping
+    public ResponseEntity<Time> update(@RequestBody final Time time) {
+        final Time save = this.timeService.save(time);
+        return ResponseEntity.ok(save);
     }
 
     @GetMapping("/meu")

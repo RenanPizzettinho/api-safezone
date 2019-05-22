@@ -13,11 +13,11 @@ import java.util.Objects;
 @Repository
 public class ContextoUsuarioRepository {
 
-    private BasicRepository repository;
-    private UsuarioService usuarioService;
+    private final BasicRepository repository;
+    private final UsuarioService usuarioService;
 
     @Autowired
-    public ContextoUsuarioRepository(BasicRepository repository, final UsuarioService usuarioService) {
+    public ContextoUsuarioRepository(final BasicRepository repository, final UsuarioService usuarioService) {
         this.repository = repository;
         this.usuarioService = usuarioService;
     }
@@ -26,14 +26,14 @@ public class ContextoUsuarioRepository {
         if (bean.getId() == null) {
             bean.setUsuario(this.usuarioService.usuarioContexto());
 
-            return repository.save(clazz, bean);
+            return this.repository.save(clazz, bean);
 
         }
-        final T oldBean = repository.find(clazz, bean.getId());
-        repository.checkNotFound(oldBean);
+        final T oldBean = this.repository.find(clazz, bean.getId());
+        this.repository.checkNotFound(oldBean);
         this.checkUsuario(oldBean);
 
-        return repository.save(clazz, bean);
+        return this.repository.save(clazz, bean);
 
     }
 

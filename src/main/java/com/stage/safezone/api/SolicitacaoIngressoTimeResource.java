@@ -22,31 +22,31 @@ public class SolicitacaoIngressoTimeResource {
 
     @PostMapping("time/{id}/solicitar")
     public ResponseEntity solicitar(@PathVariable("id") final Long id) {
-        final SolicitacaoIngresso solicitacaoIngresso = solicitacaoIngressoService.solicitar(id);
+        final SolicitacaoIngresso solicitacaoIngresso = this.solicitacaoIngressoService.solicitar(id);
         return ResponseEntity.ok(solicitacaoIngresso);
     }
 
     @PutMapping("{id}/aprovar")
     public ResponseEntity aprovar(@PathVariable("id") final Long id) {
-        final SolicitacaoIngresso aprovar = solicitacaoIngressoService.aprovar(id);
+        final SolicitacaoIngresso aprovar = this.solicitacaoIngressoService.aprovar(id);
         return ResponseEntity.ok(aprovar);
     }
 
     @PutMapping("{id}/negar")
     public ResponseEntity negar(@PathVariable("id") final Long id) {
-        final SolicitacaoIngresso aprovar = solicitacaoIngressoService.negar(id);
+        final SolicitacaoIngresso aprovar = this.solicitacaoIngressoService.negar(id);
         return ResponseEntity.ok(aprovar);
     }
 
     @GetMapping("time/{id}")
     public ResponseEntity porTime(@PathVariable("id") final Long id) {
-        final List<SolicitacaoIngresso> solicitacaoIngressos = solicitacaoIngressoService.porTime(id);
+        final List<SolicitacaoIngresso> solicitacaoIngressos = this.solicitacaoIngressoService.porTime(id);
         return ResponseEntity.ok(solicitacaoIngressos);
     }
 
     @GetMapping("minhas")
     public ResponseEntity minhas() {
-        final List<SolicitacaoIngresso> solicitacaoIngressos = solicitacaoIngressoService.minhas();
+        final List<SolicitacaoIngresso> solicitacaoIngressos = this.solicitacaoIngressoService.minhas();
         return ResponseEntity.ok(solicitacaoIngressos);
     }
 

@@ -22,7 +22,7 @@ public class InscricaoResource {
     @GetMapping("usuario/{id}")
     public ResponseEntity findByUsuario(@PathVariable("id") final Long id) {
 
-        List<Inscricao> byUsuario = inscricaoService.findByUsuario(id);
+        final List<Inscricao> byUsuario = this.inscricaoService.findByUsuario(id);
 
         return ResponseEntity.ok(byUsuario);
     }
@@ -30,25 +30,25 @@ public class InscricaoResource {
     @GetMapping("evento/{id}")
     public ResponseEntity findByEvento(@PathVariable("id") final Long id) {
 
-        List<Inscricao> byEvento = inscricaoService.findByEvento(id);
+        final List<Inscricao> byEvento = this.inscricaoService.findByEvento(id);
 
         return ResponseEntity.ok(byEvento);
     }
 
     @PostMapping("evento/{id}/me-inscrever")
     public ResponseEntity inscrever(@PathVariable("id") final Long id) {
-        return ResponseEntity.ok(inscricaoService.inscrever(id));
+        return ResponseEntity.ok(this.inscricaoService.inscrever(id));
     }
 
     @PutMapping("{id}/cancelar")
     public ResponseEntity cancelar(@PathVariable("id") final Long id) {
-        Inscricao cancelar = inscricaoService.cancelar(id);
+        final Inscricao cancelar = this.inscricaoService.cancelar(id);
         return ResponseEntity.ok(cancelar);
     }
 
     @PutMapping("{id}/confirmar")
     public ResponseEntity confirmar(@PathVariable("id") final Long id) {
-        Inscricao confirmar = inscricaoService.confirmar(id);
+        final Inscricao confirmar = this.inscricaoService.confirmar(id);
         return ResponseEntity.ok(confirmar);
     }
 
