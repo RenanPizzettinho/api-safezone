@@ -1,7 +1,10 @@
 package com.stage.safezone.auth;
 
+import com.stage.safezone.model.Usuario;
+import com.stage.safezone.repository.UsuarioRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +23,13 @@ public class TokenAuthenticationService {
     private final long EXPIRATION_TIME = 360000;
     private final String TOKEN_PREFIX = "Bearer ";
     private final String HEADER_STRING = "Authorization";
+    private final UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public TokenAuthenticationService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
 
     public void addAuthentication(final HttpServletResponse response, final String userName) {
         final String token = Jwts.builder()
@@ -42,7 +52,8 @@ public class TokenAuthenticationService {
                     .getSubject();
 
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+                final Usuario usuario = this.usuarioRepository.findByUsuario(user);
+                return new UsernamePasswordAuthenticationToken(usuario, null, Collections.emptyList());
             }
         }
         return null;

@@ -6,6 +6,7 @@ import com.stage.safezone.repository.UsuarioRepository;
 import com.stage.safezone.util.UsuarioContext;
 import com.stage.safezone.vo.UsuarioVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,8 +70,7 @@ public class UsuarioService implements CrudService<Usuario> {
     }
 
     public Usuario usuarioContexto() {
-        final String usuario = this.usuarioContext.getUsuario();
-        return this.usuarioRepository.findByUsuario(usuario);
+        return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 

@@ -29,7 +29,7 @@ public class UsuarioResource {
 
     @GetMapping("eu")
     public ResponseEntity findOne() {
-        return ResponseEntity.ok(usuarioService.eu());
+        return ResponseEntity.ok(usuarioService.usuarioContexto());
     }
 
 }
