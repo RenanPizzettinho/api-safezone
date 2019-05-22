@@ -2,7 +2,6 @@ package com.stage.safezone.api;
 
 import com.stage.safezone.model.Evento;
 import com.stage.safezone.service.EventoService;
-import com.stage.safezone.service.InscricaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("eventos")
+@RequestMapping("evento")
 public class EventoResource {
 
-    @Autowired
-    private EventoService eventoService;
+    private final EventoService eventoService;
 
     @Autowired
-    private InscricaoService inscricaoService;
+    public EventoResource(final EventoService eventoService) {
+        this.eventoService = eventoService;
+    }
 
     @PostMapping
     public ResponseEntity create(final Evento evento) {
@@ -30,7 +30,7 @@ public class EventoResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable("id") Long id) {
+    public ResponseEntity getById(@PathVariable("id") final Long id) {
         return ResponseEntity.ok(eventoService.find(id));
     }
 

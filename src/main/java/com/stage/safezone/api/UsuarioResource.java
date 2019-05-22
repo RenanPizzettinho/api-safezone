@@ -19,17 +19,17 @@ public class UsuarioResource {
 
     @PostMapping
     public ResponseEntity create(@RequestBody final Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.save(usuario));
+        return ResponseEntity.ok(this.usuarioService.save(usuario));
     }
 
     @PutMapping
     public ResponseEntity update(@RequestBody final Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.update(usuario));
+        return ResponseEntity.ok(this.usuarioService.update(usuario));
     }
 
     @GetMapping("eu")
     public ResponseEntity findOne() {
-        return ResponseEntity.ok(usuarioService.usuarioContexto());
+        return ResponseEntity.ok(this.usuarioService.usuarioContexto());
     }
 
 }

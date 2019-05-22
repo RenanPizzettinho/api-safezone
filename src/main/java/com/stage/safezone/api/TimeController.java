@@ -35,7 +35,7 @@ public class TimeController {
 
     @GetMapping("/meu")
     public ResponseEntity meusTime() {
-        final List<Time> times = timeService.meuTime();
+        final List<Time> times = this.timeService.meuTime();
         return ResponseEntity.ok(times);
     }
 

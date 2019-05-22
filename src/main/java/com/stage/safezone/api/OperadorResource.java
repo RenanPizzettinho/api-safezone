@@ -15,12 +15,16 @@ import java.util.List;
 @RequestMapping("operadores")
 public class OperadorResource {
 
+    private final OperadorService operadorService;
+
     @Autowired
-    private OperadorService operadorService;
+    public OperadorResource(final OperadorService operadorService) {
+        this.operadorService = operadorService;
+    }
 
     @GetMapping("time/{id}")
     public ResponseEntity porTime(@PathVariable("id") final Long id) {
-        List<Operador> operadores = operadorService.porTime(id);
+        final List<Operador> operadores = this.operadorService.porTime(id);
         return ResponseEntity.ok(operadores);
     }
 

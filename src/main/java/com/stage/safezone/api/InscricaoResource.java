@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("inscricoes")
+@RequestMapping("inscricao")
 public class InscricaoResource {
 
+    private final InscricaoService inscricaoService;
+
     @Autowired
-    private InscricaoService inscricaoService;
+    public InscricaoResource(final InscricaoService inscricaoService) {
+        this.inscricaoService = inscricaoService;
+    }
 
     @GetMapping("usuario/{id}")
     public ResponseEntity findByUsuario(@PathVariable("id") final Long id) {
@@ -32,7 +36,7 @@ public class InscricaoResource {
     }
 
     @PostMapping("evento/{id}/me-inscrever")
-    public ResponseEntity inscrever(@PathVariable("id") Long id) {
+    public ResponseEntity inscrever(@PathVariable("id") final Long id) {
         return ResponseEntity.ok(inscricaoService.inscrever(id));
     }
 
