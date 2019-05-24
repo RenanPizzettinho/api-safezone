@@ -6,6 +6,7 @@ import com.stage.safezone.model.Time;
 import com.stage.safezone.model.Usuario;
 import com.stage.safezone.repository.BasicRepository;
 import com.stage.safezone.specification.SolicitacaoIngressoSpecification;
+import com.stage.safezone.specification.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,15 @@ public class SolicitacaoIngressoService implements CrudService<SolicitacaoIngres
     private final OperadorService operadorService;
     private final UsuarioService usuarioService;
     private final TimeService timeService;
+    private final Validator validator;
 
     @Autowired
-    public SolicitacaoIngressoService(final BasicRepository repository, final OperadorService operadorService, final UsuarioService usuarioService, final TimeService timeService) {
+    public SolicitacaoIngressoService(final BasicRepository repository, final OperadorService operadorService, final UsuarioService usuarioService, final TimeService timeService, final Validator validator) {
         this.repository = repository;
         this.operadorService = operadorService;
         this.usuarioService = usuarioService;
         this.timeService = timeService;
+        this.validator = validator;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class SolicitacaoIngressoService implements CrudService<SolicitacaoIngres
         final Time time = this.timeService.find(timeId);
         final SolicitacaoIngresso solicitacaoIngresso = new SolicitacaoIngresso(usuario, time, PENDENTE, null);
 
-        new SolicitacaoIngressoSpecification(this.repository).validate(solicitacaoIngresso);
+        new SolicitacaoIngressoSpecification(this.validator, this.repository).validate(solicitacaoIngresso);
 
         return this.save(solicitacaoIngresso);
 

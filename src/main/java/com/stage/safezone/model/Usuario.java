@@ -7,7 +7,9 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "USUARIOS")
+@Table(name = "USUARIOS", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_USUARIOS_USERNAME", columnNames = "USERNAME")
+})
 @SequenceGenerator(name = "SEQ_USUARIOS", sequenceName = "SEQ_USUARIOS", allocationSize = 1)
 public class Usuario implements Entidade, UserDetails {
 
@@ -16,7 +18,7 @@ public class Usuario implements Entidade, UserDetails {
     @GeneratedValue(generator = "SEQ_USUARIOS", strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "USUARIO", unique = true)
+    @Column(name = "USERNAME")
     private String username;
 
     @Column(name = "NOME")
@@ -25,13 +27,13 @@ public class Usuario implements Entidade, UserDetails {
     @Column(name = "EMAIL")
     private String email;
 
-    @Column(name = "SENHA")
+    @Column(name = "PASSWORD")
     private String password;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String username, String nome, String email, String password) {
+    public Usuario(final Long id, final String username, final String nome, final String email, final String password) {
         this.id = id;
         this.username = username;
         this.nome = nome;
@@ -41,39 +43,39 @@ public class Usuario implements Entidade, UserDetails {
 
     @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(final String nome) {
         this.nome = nome;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 

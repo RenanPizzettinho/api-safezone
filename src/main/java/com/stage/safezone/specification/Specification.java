@@ -3,8 +3,18 @@ package com.stage.safezone.specification;
 
 import com.stage.safezone.model.Entidade;
 
-public interface Specification<T extends Entidade> {
+public abstract class Specification<T extends Entidade> {
 
-    void validate(T entidade);
+    private String mensagem;
+
+    protected abstract boolean validate(T entidade);
+
+    protected void setMensagem(final String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    protected String getMensagem() {
+        return this.mensagem;
+    }
 
 }
